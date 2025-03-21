@@ -20,14 +20,14 @@ This project uses the following dependencies:
 
 2. Install Dependencies
 **For Node/Express Projects:**
-
-Copy
+dash
 npm install
 
 
 **For Python/Flask Projects:**
 Create and activate a virtual environment, then install dependencies:
 
+dash
 python -m venv venv
 # On Windows:
 venv\Scripts\activate
