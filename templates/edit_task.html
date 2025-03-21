@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Inline styles for demonstration; move to your styles.css if preferred -->
+<style>
+  body {
+    background: linear-gradient(135deg, #cce7ff, #fff8e1);
+    min-height: 100vh;
+  }
+</style>
+
+<div class="container mt-5">
+  <div class="card mx-auto shadow" style="max-width: 500px;">
+    <!-- Card header with title and real-time clock -->
+    <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #007bff; color: #fff;">
+      <h2 class="mb-0">Edit Task</h2>
+      <span id="currentTime" class="fw-bold"></span>
+    </div>
+    <div class="card-body">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="alert alert-warning">
+            {% for message in messages %}
+              <p>{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      <form method="POST" id="editTaskForm">
+        <div class="mb-3">
+          <label for="title" class="form-label">Task Title</label>
+          <input type="text" class="form-control" id="title" name="title" value="{{ task.title }}" placeholder="Enter task title" required>
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Task Description</label>
+          <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter task description" required>{{ task.description }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-success w-100">Update Task</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Real-time clock: updates every second
+  function updateTime() {
+    const now = new Date();
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    };
+    document.getElementById('currentTime').textContent = now.toLocaleString('en-US', options);
+  }
+  setInterval(updateTime, 1000);
+  updateTime(); // Initial call
+
+  // Simple form validation: ensure both fields are filled in
+  document.getElementById('editTaskForm').addEventListener('submit', function(e) {
+    const title = document.getElementById('title').value.trim();
+    const description = document.getElementById('description').value.trim();
+    if (!title || !description) {
+      e.preventDefault();
+      alert('Please fill in both the task title and description.');
+    }
+  });
+</script>
+{% endblock %}

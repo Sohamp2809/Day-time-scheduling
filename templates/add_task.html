@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Inline styles for demo; move these to your unified CSS if desired -->
+<style>
+  body {
+    background: linear-gradient(135deg, #cce7ff, #fff8e1);
+    min-height: 100vh;
+  }
+</style>
+
+<div class="container mt-5">
+  <div class="card mx-auto shadow" style="max-width: 500px;">
+    <!-- Card header includes title and a real-time clock -->
+    <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #007bff; color: #fff;">
+      <h2 class="mb-0">Add New Task</h2>
+      <span id="currentTime" class="fw-bold"></span>
+    </div>
+    <div class="card-body">
+      <form method="POST" id="addTaskForm">
+        <div class="mb-3">
+          <label for="title" class="form-label">Task Title</label>
+          <input type="text" id="title" name="title" class="form-control" placeholder="Enter task title" required>
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Task Description</label>
+          <textarea id="description" name="description" class="form-control" rows="4" placeholder="Enter task description" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success w-100">Add Task</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Real-time clock: updates every second in the header
+  function updateTime() {
+    const now = new Date();
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    };
+    document.getElementById('currentTime').textContent = now.toLocaleString('en-US', options);
+  }
+  setInterval(updateTime, 1000);
+  updateTime(); // Set clock immediately
+
+  // Simple form validation: ensure both fields are filled in
+  document.getElementById('addTaskForm').addEventListener('submit', function(e) {
+    const title = document.getElementById('title').value.trim();
+    const description = document.getElementById('description').value.trim();
+    if (!title || !description) {
+      e.preventDefault();
+      alert('Please fill in both the task title and description.');
+    }
+  });
+</script>
+{% endblock %}

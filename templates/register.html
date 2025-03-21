@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Inline styles for demonstration; move these to your unified CSS if preferred -->
+<style>
+  body {
+    background: linear-gradient(135deg, #cce7ff, #fff8e1);
+    min-height: 100vh;
+  }
+</style>
+
+<div class="container mt-5">
+  <div class="card mx-auto shadow" style="max-width: 400px;">
+    <!-- Card header with blue background and real-time clock -->
+    <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #007bff; color: #fff;">
+      <h2 class="mb-0">Register</h2>
+      <span id="currentTime" class="fw-bold" style="font-size: 0.9rem;"></span>
+    </div>
+    <div class="card-body">
+      <form method="POST" id="registerForm">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            name="email"
+            class="form-control"
+            placeholder="Enter your email"
+            required
+          >
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            placeholder="Enter your password"
+            required
+          >
+        </div>
+        <div class="mb-3">
+          <label for="confirm_password" class="form-label">Confirm Password</label>
+          <input
+            type="password"
+            name="confirm_password"
+            class="form-control"
+            placeholder="Confirm your password"
+            required
+          >
+        </div>
+        <button type="submit" class="btn btn-success w-100">Register</button>
+      </form>
+      <div class="text-center mt-3">
+        <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Real-time clock: updates every second
+  function updateTime() {
+    const now = new Date();
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    };
+    document.getElementById('currentTime').textContent = now.toLocaleString('en-US', options);
+  }
+  setInterval(updateTime, 1000);
+  updateTime(); // Initialize clock immediately
+
+  // Simple registration form validation: ensure password and confirm password match
+  document.getElementById('registerForm').addEventListener('submit', function(e) {
+    const password = document.querySelector('input[name="password"]').value.trim();
+    const confirmPassword = document.querySelector('input[name="confirm_password"]').value.trim();
+    if (password !== confirmPassword) {
+      e.preventDefault();
+      alert('Passwords do not match. Please re-enter.');
+    }
+  });
+</script>
+{% endblock %}

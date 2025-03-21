@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Inline style for demonstration; move it to styles.css if preferred -->
+<style>
+  body {
+    /* A soft gradient background: adjust colors as you wish */
+    background: linear-gradient(135deg, #cce7ff, #fff8e1);
+    min-height: 100vh;
+  }
+</style>
+
+<div class="container mt-5">
+  <!-- Greet user by extracting their name from the email -->
+  <h1 class="text-center mb-4">
+    Welcome, {{ current_user.email.split('@')[0]|title }}!
+  </h1>
+
+  <div class="card shadow">
+    <!-- Card header now shows a task count badge and a real-time clock -->
+    <div
+      class="card-header d-flex justify-content-between align-items-center"
+    >
+      <h2 class="mb-0">
+        Your Tasks
+        <span class="badge bg-primary">
+          {{ tasks|length }} <!-- Displays the total number of tasks -->
+        </span>
+      </h2>
+      <!-- Real-time clock displayed on the right -->
+      <span id="currentTime" class="fw-bold"></span>
+    </div>
+
+    <!-- Search bar for filtering tasks -->
+    <div class="card-body">
+      <input
+        type="text"
+        id="taskSearch"
+        class="form-control mb-3"
+        placeholder="Search tasks..."
+      />
+      <ul class="list-group list-group-flush" id="taskList">
+        {% for task in tasks %}
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          <span class="task-title">{{ task.title }}</span>
+          <div>
+            <a
+              href="{{ url_for('edit_task', task_id=task.id) }}"
+              class="btn btn-sm btn-primary me-2"
+              >Edit</a
+            >
+            <a
+              href="{{ url_for('delete_task', task_id=task.id) }}"
+              class="btn btn-sm btn-danger"
+              >Delete</a
+            >
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Button to add a new task -->
+  <div class="text-center mt-4">
+    <a href="{{ url_for('add_task') }}" class="btn btn-success">
+      Add New Task
+    </a>
+  </div>
+</div>
+
+<script>
+  // 1) Real-time clock: updates every second
+  function updateTime() {
+    const now = new Date();
+    // Customize the format as you like
+    const options = {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    };
+    document.getElementById('currentTime').textContent =
+      now.toLocaleString('en-US', options);
+  }
+  setInterval(updateTime, 1000);
+  updateTime(); // Initial call to set clock immediately
+
+  // 2) Task search filter functionality
+  document.getElementById('taskSearch').addEventListener('keyup', function() {
+    const filter = this.value.toLowerCase();
+    const items = document.querySelectorAll('#taskList li');
+    items.forEach(function(item) {
+      const title = item.querySelector('.task-title').textContent.toLowerCase();
+      item.style.display = title.indexOf(filter) > -1 ? '' : 'none';
+    });
+  });
+</script>
+{% endblock %}
