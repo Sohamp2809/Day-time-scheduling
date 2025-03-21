@@ -19,9 +19,11 @@ This project uses the following dependencies:
 > **Note:** The `node_modules` folder is excluded via `.gitignore` to keep the repository size small.
 
 2. Install Dependencies
+
 **For Node/Express Projects:**
 dash
 npm install
+
 
 
 **For Python/Flask Projects:**
