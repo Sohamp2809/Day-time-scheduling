@@ -1,0 +1,16 @@
+# Node dependencies
+node_modules/
+
+# Python virtual environment
+venv/
+env/
+__pycache__/
+
+# OS / Editor-specific files
+.DS_Store
+.vscode/
+.idea/
+
+# (Optional) If you don't want to keep package-lock.json, uncomment the line below.
+
+# package-lock.json
